@@ -64,4 +64,7 @@ $ npm run test:cov
 # create module
 $ nest g module user
 
+# create service
+$ nest g service prisma --no-spec
+
 ```
