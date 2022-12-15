@@ -18,7 +18,7 @@ export class AuthService {
       },
     });
     //return the saved user
-    console.log(user);
+    delete user.hash;
     return user;
   }
   signin() {
