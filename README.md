@@ -65,6 +65,6 @@ $ yarn run test:cov
 $ nest g module user
 
 # create service
-$ nest g service prisma --no-spec
+$ nest g service (example) --no-spec
 
 ```
