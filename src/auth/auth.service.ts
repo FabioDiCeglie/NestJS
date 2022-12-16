@@ -27,8 +27,7 @@ export class AuthService {
         },
       });
       //return the saved user
-      delete user.hash;
-      return user;
+      return this.signToken(user.id, user.email);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -54,11 +53,10 @@ export class AuthService {
     // if password is not correct throw exception
     if (!pwMatches) throw new ForbiddenException('Password is not correct');
     // send back the user
-    delete user.hash;
     return this.signToken(user.id, user.email);
   }
 
-  async signToken(userId: number, email: string): Promise<string> {
+  signToken(userId: number, email: string): Promise<string> {
     const payload = {
       sub: userId,
       email: email,
