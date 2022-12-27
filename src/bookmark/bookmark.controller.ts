@@ -1,8 +1,11 @@
+import { GetUser } from '@/auth/decorator';
 import { JwtGuard } from '@/auth/guard';
 import {
   Controller,
   Delete,
   Get,
+  Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -14,17 +17,22 @@ import { BookmarkService } from './bookmark.service';
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
-  getBookmarks() {}
+  getBookmarks(@GetUser('id') userId: number) {
+    this.bookmarkService.getBookmarks();
+  }
 
-  @Get()
-  getBookmarkById() {}
+  @Get(':id')
+  getBookmarkById(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) bookmarkId: number,
+  ) {}
 
   @Post()
-  createBookmarks() {}
+  createBookmarks(@GetUser('id') userId: number) {}
 
   @Patch()
-  editBookmarkById() {}
+  editBookmarkById(@GetUser('id') userId: number) {}
 
   @Delete()
-  deleteBookmarkById() {}
+  deleteBookmarkById(@GetUser('id') userId: number) {}
 }
