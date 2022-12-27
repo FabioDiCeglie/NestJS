@@ -1,6 +1,7 @@
 import { GetUser } from '@/auth/decorator';
 import { JwtGuard } from '@/auth/guard';
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -11,6 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
+import { CreateBookmarkDto, EditBookmarkDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('bookmarks')
@@ -28,10 +30,16 @@ export class BookmarkController {
   ) {}
 
   @Post()
-  createBookmarks(@GetUser('id') userId: number) {}
+  createBookmarks(
+    @GetUser('id') userId: number,
+    @Body() dto: CreateBookmarkDto,
+  ) {}
 
   @Patch()
-  editBookmarkById(@GetUser('id') userId: number) {}
+  editBookmarkById(
+    @GetUser('id') userId: number,
+    @Body() dto: EditBookmarkDto,
+  ) {}
 
   @Delete()
   deleteBookmarkById(@GetUser('id') userId: number) {}
