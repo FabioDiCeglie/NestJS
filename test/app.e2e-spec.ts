@@ -149,7 +149,8 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userAt}',
           })
           .withBody(dto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .stores('bookmarkId', 'id');
       });
     });
     describe('Get bookmarks', () => {
@@ -160,10 +161,23 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .expectStatus(200);
+          .expectStatus(200)
+          .expectJsonLength(1);
       });
     });
-    describe('Get Bookmark by Id', () => {});
+    describe('Get Bookmark by Id', () => {
+      it('should get bookmark by Id', () => {
+        return pactum
+          .spec()
+          .get('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200)
+          .expectBodyContains('$S{bookmarkId}');
+      });
+    });
     describe('Edit Bookmark by Id', () => {});
     describe('Delete Bookmark by Id', () => {});
   });
