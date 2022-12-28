@@ -46,8 +46,8 @@ export class BookmarkService {
     //check if user owns the bookmark
     if (!bookmark || bookmark.userId !== userId)
       throw new ForbiddenException('Access to resources denied');
-    //modify bookmarks
-    return this.prisma.bookmark.update({
+    //modify bookmark
+    return await this.prisma.bookmark.update({
       where: {
         id: bookmarkId,
       },
@@ -57,5 +57,22 @@ export class BookmarkService {
     });
   }
 
-  deleteBookmarkById(userId: number, bookmarkId: number) {}
+  async deleteBookmarkById(userId: number, bookmarkId: number) {
+    // get bookmark by id
+    const bookmark = await this.prisma.bookmark.findFirst({
+      where: {
+        id: bookmarkId,
+        userId,
+      },
+    });
+    //check if user owns the bookmark
+    if (!bookmark || bookmark.userId !== userId)
+      throw new ForbiddenException('Access to resources denied');
+    // delete bookmark
+    await this.prisma.bookmark.delete({
+      where: {
+        id: bookmarkId,
+      },
+    });
+  }
 }
