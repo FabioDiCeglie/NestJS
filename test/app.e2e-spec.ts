@@ -5,7 +5,7 @@ import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { AuthDto } from '@/auth/dto';
 import { EditUserDto } from '@/user/dto';
-import { CreateBookmarkDto } from '@/bookmark/dto';
+import { CreateBookmarkDto, EditBookmarkDto } from '@/bookmark/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -178,7 +178,25 @@ describe('App e2e', () => {
           .expectBodyContains('$S{bookmarkId}');
       });
     });
-    describe('Edit Bookmark by Id', () => {});
+    describe('Edit Bookmark by Id', () => {
+      const dto: EditBookmarkDto = {
+        title: 'edited test title',
+        description: 'edited test description',
+      };
+      it('should edit the bookmark by Id', () => {
+        return pactum
+          .spec()
+          .patch('/bookmarks/{id}')
+          .withPathParams('id', '$S{bookmarkId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.title)
+          .expectBodyContains(dto.description);
+      });
+    });
     describe('Delete Bookmark by Id', () => {});
   });
 });
