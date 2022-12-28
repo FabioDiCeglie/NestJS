@@ -52,6 +52,8 @@ $ yarn run start:prod
 $ yarn run test
 
 # e2e tests
+$ yarn db:test:restart
+$ yarn prisma:test:deploy
 $ yarn run test:e2e
 
 # test coverage
